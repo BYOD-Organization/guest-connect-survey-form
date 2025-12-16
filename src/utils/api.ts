@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Campaign, SurveySubmission, Question, CampaignBasicData, BasicSubmissionPayload, BasicSubmissionResponse } from '../types/survey';
+import type { Campaign, SurveySubmission, Question, CampaignBasicData, BasicSubmissionPayload, BasicSubmissionResponse, AnswersSubmissionPayload } from '../types/survey';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://guestconnect.stage.byod.ai/api';
 
@@ -69,7 +69,7 @@ const mapQuestionType = (apiType: string): 'rating' | 'text' | 'multipleChoice' 
     'rating': 'rating',
     'text': 'text',
     'multiplechoice': 'multipleChoice',
-    'yesno': 'yesNo',
+    'yes_no': 'yesNo',
   };
   
   return typeMap[apiType.toLowerCase()] || 'text';
@@ -106,10 +106,8 @@ export const submitBasicSurveyInfo = async (payload: BasicSubmissionPayload): Pr
  * Submits survey answers
  * Phase 2: Submit answers using the submission ID from phase 1
  */
-export const submitSurveyAnswers = async (submissionId: number, answers: Array<{ questionId: number; answer: string | number }>): Promise<void> => {
-  await axios.post(`${API_BASE_URL}/feedback/submission/${submissionId}/answers`, {
-    answers,
-  });
+export const submitSurveyAnswers = async (payload: AnswersSubmissionPayload): Promise<void> => {
+  await axios.post(`${API_BASE_URL}/feedback/submission/answers`, payload);
 };
 
 /**

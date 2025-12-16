@@ -91,12 +91,16 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
       const submissionId = basicResponse.id;
 
       // Phase 2: Submit survey answers
-      const surveyAnswers = (campaign.questions as Question[]).map((question) => ({
+      const answers = (campaign.questions as Question[]).map((question) => ({
         questionId: typeof question.id === 'number' ? question.id : parseInt(question.id as string),
-        answer: values[`question_${question.id}`],
+        value: values[`question_${question.id}`],
       }));
 
-      await submitSurveyAnswers(submissionId, surveyAnswers);
+      await submitSurveyAnswers({
+        uniqueUrlToken: campaignId,
+        feedbackSubmissionId: submissionId,
+        answers,
+      });
 
       setSubmitted(true);
       message.success('Survey submitted successfully!');

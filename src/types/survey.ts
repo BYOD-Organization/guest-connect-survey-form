@@ -108,22 +108,31 @@ export interface BasicSubmissionResponse {
     title: string;
     startDate: string;
     endDate: string;
-    reward?: string;
+    reward?: string | null;
     winnersCount: number;
     uniqueUrlToken: string;
-    questions: Question[];
+    questions: unknown[];
   };
   ipAddress: string;
   userAgent: string;
   browser: string;
   device: string;
-  name?: string;
-  email?: string;
-  phone?: string;
+  name?: string | null;
+  email?: string | null;
+  phone?: string | null;
   rewardOptIn: boolean;
   metadataJson?: Record<string, unknown>[];
   workplace?: string;
   submittedAt: string;
+}
+
+export interface AnswersSubmissionPayload {
+  uniqueUrlToken: string;
+  feedbackSubmissionId: number;
+  answers: Array<{
+    questionId: number;
+    value: string | number;
+  }>;
 }
 
 export type SurveyError = 
