@@ -33,6 +33,16 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<SurveyError | null>(null);
   const [optOutOfContest, setOptOutOfContest] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const loadCampaign = useCallback(async () => {
     try {
@@ -131,13 +141,13 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
           >
             <div>
               <Radio.Group>
-                <Space direction="horizontal" size="large">
+                <Space direction={isMobile ? 'vertical' : 'horizontal'} size={isMobile ? 'small' : 'large'} style={{ width: '100%' }}>
                   {[1, 2, 3, 4, 5].map((value) => (
                     <div key={value} style={{ textAlign: 'center' }}>
-                      <Radio value={value} style={{ display: 'block', marginBottom: 8 }}>
-                        <span style={{ fontSize: 16, fontWeight: 500 }}>{value}</span>
+                      <Radio value={value} style={{ display: 'block', marginBottom: isMobile ? 4 : 8 }}>
+                        <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 500 }}>{value}</span>
                       </Radio>
-                      <Text type="secondary" style={{ fontSize: 12 }}>
+                      <Text type="secondary" style={{ fontSize: isMobile ? 11 : 12 }}>
                         {ratingLabels[value - 1]}
                       </Text>
                     </div>
@@ -193,7 +203,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
             label={question.question}
             rules={[{ required: question.required, message: 'Please provide an answer' }]}
           >
-            <TextArea rows={3} placeholder="Enter your response" />
+            <TextArea rows={isMobile ? 2 : 3} placeholder="Enter your response" />
           </Form.Item>
         );
     }
@@ -272,11 +282,11 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
   }
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f0f2f5', padding: '24px 0' }}>
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 24px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#f0f2f5', padding: isMobile ? '16px 0' : '24px 0' }}>
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: isMobile ? '0 16px' : '0 24px' }}>
         {/* Header with logo */}
         {campaign.guestConnectSetting?.logoPath && (
-          <div style={{ textAlign: 'center', marginBottom: 32 }}>
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? 20 : 32 }}>
             <img 
               src={`${import.meta.env.VITE_IMAGE_URL}${campaign.guestConnectSetting.logoPath}`}
               alt="Company Logo" 
@@ -285,19 +295,15 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
           </div>
         )}
 
-        <Card>
-          <Title level={2} style={{ textAlign: 'center', marginBottom: 32 }}>
+        <Card style={{ padding: isMobile ? '16px' : undefined }}>
+          <Title level={isMobile ? 3 : 2} style={{ textAlign: 'center', marginBottom: 8 }}>
             {campaign.title}
           </Title>
 
-          {campaign.reward && campaign.rewardDetailsText && !optOutOfContest && (
-            <Alert
-              message={campaign.rewardDetailsText}
-              type="info"
-              showIcon
-              style={{ marginBottom: 24 }}
-            />
-          )}
+          {/* Subheader based on reward status */}
+          <Paragraph style={{ textAlign: 'center', marginBottom: isMobile ? 20 : 32, color: '#666', fontSize: isMobile ? 14 : 16 }}>
+            {campaign.reward ? 'Complete this Survey and You can Enter our Contest Below!' : 'Your Feedback Will Help Us Improve!'}
+          </Paragraph>
 
           <Form
             form={form}
@@ -305,10 +311,51 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
             onFinish={handleSubmit}
             autoComplete="off"
           >
+            {/* Survey Questions */}
+            <Divider style={{ margin: isMobile ? '16px 0' : '24px 0' }}>Survey Questions</Divider>
+            {campaign.questions && Array.isArray(campaign.questions) ? (
+              campaign.questions.map((q) => (
+                <div key={q.id} style={{ marginBottom: isMobile ? 16 : 24 }}>
+                  {renderQuestion(q)}
+                </div>
+              ))
+            ) : (
+              <Alert 
+                message="Unable to load survey questions" 
+                type="error" 
+                style={{ marginBottom: 24 }} 
+              />
+            )}
+
+            {/* Reward Details Section - After Survey Questions */}
+            {campaign.reward && (
+              <>
+                <Divider style={{ margin: isMobile ? '16px 0' : '24px 0' }}>Contest</Divider>
+                {campaign.reward.title && (
+                  <Paragraph style={{ fontSize: isMobile ? 14 : 16, fontWeight: 500, marginBottom: isMobile ? 8 : 12 }}>
+                    {campaign.reward.title}
+                  </Paragraph>
+                )}
+                {/* {campaign.reward.description && (
+                  <Paragraph style={{ marginBottom: 24 }}>
+                    {campaign.reward.description}
+                  </Paragraph>
+                )} */}
+                {campaign.rewardDetailsText && (
+                  <Alert
+                    message={campaign.rewardDetailsText}
+                    type="info"
+                    showIcon
+                    style={{ marginBottom: isMobile ? 16 : 24 }}
+                  />
+                )}
+              </>
+            )}
+
             {/* Customer Information Section */}
             {campaign.reward && (
               <>
-                <Divider>Contact Information</Divider>
+                <Divider style={{ margin: isMobile ? '16px 0' : '24px 0' }}>Contact Information</Divider>
                 
                 <Form.Item>
                   <Checkbox
@@ -325,8 +372,9 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
                       name="name"
                       label="Name"
                       rules={[{ required: true, message: 'Please enter your name' }]}
+                      style={{ marginBottom: isMobile ? 12 : 16 }}
                     >
-                      <Input placeholder="Enter your full name" size="large" />
+                      <Input placeholder="Enter your full name" size={isMobile ? 'middle' : 'large'} />
                     </Form.Item>
 
                     <Form.Item
@@ -343,8 +391,9 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
                           }
                         }
                       ]}
+                      style={{ marginBottom: isMobile ? 12 : 16 }}
                     >
-                      <Input type="email" placeholder="Enter your email" size="large" />
+                      <Input type="email" placeholder="Enter your email" size={isMobile ? 'middle' : 'large'} />
                     </Form.Item>
 
                     <Form.Item
@@ -361,46 +410,34 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
                           }
                         }
                       ]}
+                      style={{ marginBottom: isMobile ? 12 : 16 }}
                     >
                       <Input 
                         placeholder="(123) 456-7890" 
-                        size="large"
+                        size={isMobile ? 'middle' : 'large'}
                         maxLength={14}
                       />
                     </Form.Item>
                   </>
                 )}
-
-                <Divider>Survey Questions</Divider>
               </>
-            )}
-
-            {/* Survey Questions */}
-            {campaign.questions && Array.isArray(campaign.questions) ? (
-              campaign.questions.map(renderQuestion)
-            ) : (
-              <Alert 
-                message="Unable to load survey questions" 
-                type="error" 
-                style={{ marginBottom: 24 }} 
-              />
             )}
 
             {/* Disclaimer */}
             {campaign.guestConnectSetting?.disclaimerText && (
               <Alert
-                message={<Text type="secondary" style={{ fontSize: 12 }}>{campaign.guestConnectSetting.disclaimerText}</Text>}
+                message={<Text type="secondary" style={{ fontSize: isMobile ? 11 : 12 }}>{campaign.guestConnectSetting.disclaimerText}</Text>}
                 type="info"
-                style={{ marginTop: 24, marginBottom: 24 }}
+                style={{ marginTop: isMobile ? 16 : 24, marginBottom: isMobile ? 16 : 24 }}
               />
             )}
 
             {/* Submit Button */}
-            <Form.Item style={{ marginTop: 32 }}>
+            <Form.Item style={{ marginTop: isMobile ? 20 : 32 }}>
               <Button
                 type="primary"
                 htmlType="submit"
-                size="large"
+                size={isMobile ? 'large' : 'large'}
                 block
                 loading={submitting}
               >
@@ -409,19 +446,6 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
             </Form.Item>
           </Form>
         </Card>
-
-        {/* Footer Disclaimer */}
-        {campaign.guestConnectSetting?.disclaimerText && (
-          <div style={{ 
-            textAlign: 'center', 
-            marginTop: 24, 
-            padding: '0 24px',
-            color: '#8c8c8c',
-            fontSize: 12 
-          }}>
-            <Text type="secondary">{campaign.guestConnectSetting.disclaimerText}</Text>
-          </div>
-        )}
       </div>
     </div>
   );
