@@ -132,6 +132,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
     switch (question.type) {
       case 'rating': {
         const ratingLabels = ['Poor', 'Fair', 'Average', 'Good', 'Excellent'];
+        const ratingEmojis = ['😠', '😞', '😐', '😊', '😄'];
         return (
           <Form.Item
             key={question.id}
@@ -141,15 +142,21 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
           >
             <div>
               <Radio.Group>
-                <Space direction={isMobile ? 'vertical' : 'horizontal'} size={isMobile ? 'small' : 'large'} style={{ width: '100%' }}>
+                <Space direction="horizontal" size={isMobile ? 'small' : 'large'} style={{ width: '100%', justifyContent: 'center' }}>
                   {[1, 2, 3, 4, 5].map((value) => (
                     <div key={value} style={{ textAlign: 'center' }}>
                       <Radio value={value} style={{ display: 'block', marginBottom: isMobile ? 4 : 8 }}>
-                        <span style={{ fontSize: isMobile ? 14 : 16, fontWeight: 500 }}>{value}</span>
+                        {isMobile ? (
+                          <span style={{ fontSize: 24 }}>{ratingEmojis[value - 1]}</span>
+                        ) : (
+                          <span style={{ fontSize: 16, fontWeight: 500 }}>{value}</span>
+                        )}
                       </Radio>
-                      <Text type="secondary" style={{ fontSize: isMobile ? 11 : 12 }}>
-                        {ratingLabels[value - 1]}
-                      </Text>
+                      {!isMobile && (
+                        <Text type="secondary" style={{ fontSize: 12 }}>
+                          {ratingLabels[value - 1]}
+                        </Text>
+                      )}
                     </div>
                   ))}
                 </Space>
