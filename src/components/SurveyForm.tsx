@@ -175,8 +175,14 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
             rules={[{ required: question.required, message: 'Please select an option' }]}
           >
             <Radio.Group>
-              <Radio value="yes">Yes</Radio>
-              <Radio value="no">No</Radio>
+              <Space direction="horizontal" size={isMobile ? 'large' : 'middle'}>
+                <Radio value="yes">
+                  {isMobile ? <span style={{ fontSize: 24 }}>👍</span> : 'Yes'}
+                </Radio>
+                <Radio value="no">
+                  {isMobile ? <span style={{ fontSize: 24 }}>👎</span> : 'No'}
+                </Radio>
+              </Space>
             </Radio.Group>
           </Form.Item>
         );
