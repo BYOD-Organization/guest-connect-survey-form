@@ -459,6 +459,22 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
             </Form.Item>
           </Form>
         </Card>
+        
+        {/* Footer */}
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '24px 0', 
+          color: '#666',
+          fontSize: '14px',
+          marginTop: '16px'
+        }}>
+          <Text type="secondary" style={{ fontSize: '14px' }}>
+            Powered by Mabel™, © 2026 BYOD, Inc. All rights reserved.{' '}
+            <a href="https://byod.ai/privacy-policy/" target="_blank" rel="noopener noreferrer" style={{ color: '#446388' }}>
+              Privacy Policy
+            </a>
+          </Text>
+        </div>
       </div>
     </div>
   );
