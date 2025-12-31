@@ -5,9 +5,10 @@ import './App.css';
 
 function App() {
   const [campaignId] = useState<string | null>(() => {
-    // Extract campaign ID from URL path like /campaign/gFs29rKJ95XXeBkaL6hsEmN5QnRTZXVOYUVIUzFLdi9saFhLb3c9PQ==
+    // Extract campaign ID from URL path like /campaign/tQr14flavBD2iN/v4syeL3lMZmJnTjdUTDBSYTVPSjB5VUFFNkE9PQ==
     const path = window.location.pathname;
-    const match = path.match(/\/campaign\/([^/]+)/);
+    const match = path.match(/\/campaign\/(.+)/);
+    console.log("match", match);
     return match ? match[1] : null;
   });
   console.log('Extracted campaignId:', campaignId);
