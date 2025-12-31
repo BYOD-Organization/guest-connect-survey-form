@@ -52,6 +52,27 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
       if (!data.active) {
         setError('CAMPAIGN_INACTIVE');
       } else {
+        // Check if campaign is within valid date range
+        const now = new Date();
+        
+        if (data.startDate) {
+          const startDate = new Date(data.startDate);
+          if (now < startDate) {
+            setError('SURVEY_NOT_STARTED');
+            setLoading(false);
+            return;
+          }
+        }
+        
+        if (data.endDate) {
+          const endDate = new Date(data.endDate);
+          if (now > endDate) {
+            setError('SURVEY_EXPIRED');
+            setLoading(false);
+            return;
+          }
+        }
+        
         setCampaign(data);
       }
     } catch (err) {
@@ -229,6 +250,8 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
       TOO_MANY_ATTEMPTS: 'You have made too many attempts to submit this Survey',
       INVALID_PARAMETERS: 'Invalid survey parameters. Please check your link.',
       SUBMISSION_ERROR: 'An error occurred while submitting your survey. Please try again.',
+      SURVEY_EXPIRED: 'This survey has expired and is no longer accepting responses.',
+      SURVEY_NOT_STARTED: 'This survey has not been activated yet. Please check back later.',
     };
 
     return (
