@@ -1,0 +1,48 @@
+name: Build and Deploy (Staging Only)
+
+on:
+  push:
+    branches:
+      - 
+
+jobs:
+  build-and-deploy-staging:
+    runs-on: ubuntu-latest
+
+    env:
+      ENVIRONMENT: staging
+      DOTENV_PATH: .env.staging
+      MONITOR_ID: '41776000000276110'
+      HOST: ${{ secrets.HOST_STAG }}
+      REMOTE_PATH: ''
+      ARTIFACT_PATH: '/home/ubuntu/artifact'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Get runner IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.14.0"
+      - name: Install Dependencies
+        run: |
+           unset CI
+           npm install --frozen-lockfile
+
+      - name: Run Staging Build
+        env:
+          DOTENV_CONFIG_PATH: .env.staging
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          CI='' npm run build:staging
+          if [ -d "dist" ]; then
+            echo "Staging build completed successfully."
+          else
+            echo "::error::Build failed: 'Build' directory not found."
+            exit 1
+          fi
+      
