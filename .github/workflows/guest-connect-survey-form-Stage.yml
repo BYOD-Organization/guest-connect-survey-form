@@ -3,7 +3,7 @@ name: Build and Deploy (Staging Only)
 on:
   push:
     branches:
-      - 
+      - stage
 
 jobs:
   build-and-deploy-staging:
@@ -14,8 +14,8 @@ jobs:
       DOTENV_PATH: .env.staging
       MONITOR_ID: '41776000000276110'
       HOST: ${{ secrets.HOST_STAG }}
-      REMOTE_PATH: ''
-      ARTIFACT_PATH: '/home/ubuntu/artifact'
+      REMOTE_PATH: '/home/ubuntu/test-code'
+      ARTIFACT_PATH: '/home/ubuntu/test-code'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -45,4 +45,15 @@ jobs:
             echo "::error::Build failed: 'Build' directory not found."
             exit 1
           fi
+      - name: Create full project artifact
+        run: |
+         cd ../
+         tar -zcf guest-connect-survey-form.tar.gz guest-connect-survey-form
+      - name: Transfer build to remote server
+        run: |
+          cd ../
+          echo "${{ secrets.KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          scp -o StrictHostKeyChecking=no -i private_key.pem /home/runner/work/guest-connect-survey-form/guest-connect-survey-form.ai.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }}:${{ env.ARTIFACT_PATH }}
+          rm -f private_key.pem
       
