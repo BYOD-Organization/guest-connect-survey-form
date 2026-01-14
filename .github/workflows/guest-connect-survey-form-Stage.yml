@@ -38,7 +38,7 @@ jobs:
           DOTENV_CONFIG_PATH: .env.staging
           NODE_OPTIONS: --max-old-space-size=4096
         run: |
-          CI='' npm run build:stage
+          CI='' npm run build
           if [ -d "dist" ]; then
             echo "Staging build completed successfully."
           else
