@@ -98,33 +98,36 @@ jobs:
             sudo systemctl status apache2.service
           EOF
           rm -f private_key.pem
-
-      
-
       - name: Send failure email via SendGrid
         if: failure()
         env:
-          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-          MAIL_FROM: ${{ vars.SENDGRID_FROM_EMAIL }}
-          MAIL_TO: ${{ vars.MAIL_TO }}
-        run: |
-          curl -X POST https://api.sendgrid.com/v3/mail/send \
+               SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+               MAIL_FROM: ${{ vars.SENDGRID_FROM_EMAIL }}
+               MAIL_TO: ${{ vars.MAIL_TO }}
+            run: |
+               curl -X POST https://api.sendgrid.com/v3/mail/send \
+               -H "Authorization: Bearer $SENDGRID_API_KEY" \
+                -H "Content-Type: application/json" \
+                -d "{
+                     \"personalizations\": [
+                      { \"to\": [{ \"email\": \"$MAIL_TO\" }] }
+                      ],
+                \"from\": { \"email\": \"$MAIL_FROM\" },
+                \"subject\": \"Stage Deployment Failed (Rollback Executed)\",
+                \"content\": [
+                {
+                \"type\": \"text/plain\",
+                 \"value\": \"Deployment failed health check and rollback was executed.\"
+                 }
+               ]
+                }"
 
-              -H "Authorization: Bearer $SENDGRID_API_KEY" \
 
-              -H "Content-Type: application/json" \
+      
 
-              -d "{
+      
 
-                \"personalizations\": [{\"to\": [{\"email\": \"$MAIL_TO\"}]}],
-
-                \"from\": {\"email\": \"$MAIL_FROM\"},
-
-                \"subject\": \" Stage Deployment Failed (Rollback Executed)\",
-
-                \"content\": [{\"type\": \"text/plain\",\"value\": \"Deployment failed health check and rollback was executed.\"}]
-
-              }"
+                
       - name: Revoke GitHub runner IP
         if: always()
         env:
