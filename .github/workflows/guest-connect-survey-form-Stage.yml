@@ -83,9 +83,12 @@ jobs:
                     echo "Previous backup found. Deleting \$BACKUP_FILE..."
                     rm -f "\$BACKUP_FILE"
               fi
-          mkdir -p "$ARTIFACT_PATH/backup"
+          
 
-          tar --exclude='**/node_modules' -czf "$BACKUP_FILE" -C "$REMOTE_PATH" .
+          tar \
+          --exclude='node_modules' \
+          -czf "\$BACKUP_FILE" \
+          -C "\$REMOTE_PATH" .
           echo "Backup saved to \$ARTIFACT_PATH/backup/\$BACKUP_NAME"
           else
           echo "No previous code found at \$REMOTE_PATH. Skipping backup."
