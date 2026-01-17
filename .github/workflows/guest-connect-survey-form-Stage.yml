@@ -14,7 +14,7 @@ jobs:
       DOTENV_PATH: .env.staging
       MONITOR_ID: '41776000000276110'
       HOST: ${{ secrets.HOST_STAG }}
-      REMOTE_PATH: '/home/ubuntu/tes'
+      REMOTE_PATH: '/home/ubuntu/tes-code'
       ARTIFACT_PATH: '/home/ubuntu/artifact/guest-connect-survey-form'
     steps:
       - name: Checkout Code
@@ -49,7 +49,7 @@ jobs:
           DOTENV_CONFIG_PATH: .env.staging
           NODE_OPTIONS: --max-old-space-size=4096
         run: |
-          CI='' npm run build
+          CI='' npm run build-staging
           if [ -d "dist" ]; then
             echo "Staging build completed successfully."
           else
