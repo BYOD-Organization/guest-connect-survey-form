@@ -96,8 +96,8 @@ jobs:
           sudo chown -R www-data:www-data \$REMOTE_PATH
           sudo chmod -R 775 \$REMOTE_PATH
           rm -rf guest-connect-survey-form
-          #sudo systemctl reload apache2.service
-            #sudo systemctl status apache2.service
+          sudo systemctl reload apache2.service
+          sudo systemctl status apache2.service
           EOF
           rm -f private_key.pem
 
