@@ -15,7 +15,7 @@ jobs:
       MONITOR_ID: '41776000000276110'
       HOST: ${{ secrets.HOST_STAG }}
       REMOTE_PATH: '/home/ubuntu/test-code'
-      ARTIFACT_PATH: '/home/ubuntu/test-code'
+      ARTIFACT_PATH: '/home/ubuntu/artifact/guest-connect-survey-form'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -67,6 +67,37 @@ jobs:
           chmod 600 private_key.pem
           scp -o StrictHostKeyChecking=no -i private_key.pem /home/runner/work/guest-connect-survey-form/guest-connect-survey-form.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }}:${{ env.ARTIFACT_PATH }}
           rm -f private_key.pem
+      - name: Deploy and restart Apache
+        run: |
+          echo "${{ secrets.KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }} << EOF
+            export REMOTE_PATH=${{ env.REMOTE_PATH }}
+            export ARTIFACT_PATH=${{ env.ARTIFACT_PATH }}
+          BACKUP_NAME="guest-connect-survey-form.tar"
+          BACKUP_FILE="\$ARTIFACT_PATH/backup/\$BACKUP_NAME"
+          
+          if [ -d "\$REMOTE_PATH" ]; then
+          echo "Backing up existing code..."
+              if [ -f "\$BACKUP_FILE" ]; then
+                    echo "Previous backup found. Deleting \$BACKUP_FILE..."
+                    rm -f "\$BACKUP_FILE"
+              fi
+          tar --exclude='**/node_modules' -cvf "$BACKUP_FILE" -C "$REMOTE_PATH" .
+          echo "Backup saved to \$ARTIFACT_PATH/backup/\$BACKUP_NAME"
+          else
+          echo "No previous code found at \$REMOTE_PATH. Skipping backup."
+          fi
+          cd \$ARTIFACT_PATH
+          tar -zxvf guest-connect-survey-form.tar.gz
+          sudo cp -rv \$ARTIFACT_PATH/guest-connect-survey-form/. \$REMOTE_PATH
+          sudo chown -R www-data:www-data \$REMOTE_PATH
+          sudo chmod -R 775 \$REMOTE_PATH
+          rm -rf mabel.byod.ai
+          sudo systemctl reload apache2.service
+            sudo systemctl status apache2.service
+          EOF
+          rm -f private_key.pem
 
       - name: Revoke GitHub runner IP
         if: always()
@@ -80,4 +111,6 @@ jobs:
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
+    
       
