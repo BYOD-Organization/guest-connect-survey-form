@@ -117,37 +117,15 @@ jobs:
 
         run: |
 
-               curl -X POST https://api.sendgrid.com/v3/mail/send \
-
-                -H "Authorization: Bearer $SENDGRID_API_KEY" \
-                -H "Content-Type: application/json" \
-
-                -d "{
-
-                     \"personalizations\": [
-
-                      { \"to\": [{ \"email\": \"$MAIL_TO\" }] }
-
-                      ],
-
-                \"from\": { \"email\": \"$MAIL_FROM\" },
-
-                \"subject\": \"Stage Deployment Failed (Rollback Executed)\",
-
-                \"content\": [
-
-                {
-
-                \"type\": \"text/plain\",
-
-                 \"value\": \"Deployment failed health check and rollback was executed.\"
-
-                 }
-
-               ]
-
-                }"
-
+              curl -X POST "https://api.sendgrid.com/v3/mail/send" \
+                 -H "Authorization: Bearer $SENDGRID_API_KEY" \
+                 -H "Content-Type: application/json" \
+                 -d "{
+                  \"personalizations\": [{\"to\": [{\"email\": \"$MAIL_TO\"}]}],
+                   \"from\": {\"email\": \"$MAIL_FROM\"},
+                   \"subject\": \"Stage Deployment Failed (Rollback Executed)\",
+                   \"content\": [{\"type\": \"text/plain\",\"value\": \"Deployment failed health check and rollback was executed.\"}]
+                    }"
                  export REMOTE_PATH=${{ env.REMOTE_PATH }}
 
                  export ARTIFACT_PATH=${{ env.ARTIFACT_PATH }}
