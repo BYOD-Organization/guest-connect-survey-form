@@ -49,7 +49,7 @@ jobs:
           DOTENV_CONFIG_PATH: .env.staging
           NODE_OPTIONS: --max-old-space-size=4096
         run: |
-          CI='' npm run build-staging
+          CI='' npm run build
           if [ -d "dist" ]; then
             echo "Staging build completed successfully."
           else
@@ -93,9 +93,9 @@ jobs:
           sudo cp -rv \$ARTIFACT_PATH/guest-connect-survey-form/. \$REMOTE_PATH
           sudo chown -R www-data:www-data \$REMOTE_PATH
           sudo chmod -R 775 \$REMOTE_PATH
-          rm -rf mabel.byod.ai
-          sudo systemctl reload apache2.service
-            sudo systemctl status apache2.service
+          rm -rf guest-connect-survey-form
+          #sudo systemctl reload apache2.service
+            #sudo systemctl status apache2.service
           EOF
           rm -f private_key.pem
       - name: Send failure email via SendGrid
@@ -121,6 +121,20 @@ jobs:
                  }
                ]
                 }"
+                 export REMOTE_PATH=${{ env.REMOTE_PATH }}
+                 export ARTIFACT_PATH=${{ env.ARTIFACT_PATH }}
+                 BACKUP_NAME="guest-connect-survey-form.tar"
+                 BACKUP_FILE="\$ARTIFACT_PATH/backup/\$BACKUP_NAME"
+                 cd \$ARTIFACT_PATH/backup
+                  sudo rm -rf "${REMOTE_PATH:?}/"*
+                  tar -zxvf guest-connect-survey-form.tar.gz
+                  sudo cp -rv \$ARTIFACT_PATH/backup/guest-connect-survey-form/. \$REMOTE_PATH
+                  sudo chown -R www-data:www-data \$REMOTE_PATH
+                  sudo chmod -R 775 \$REMOTE_PATH
+                  
+                  
+                  
+                 
 
 
       
