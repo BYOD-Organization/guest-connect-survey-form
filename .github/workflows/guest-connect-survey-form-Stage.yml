@@ -14,7 +14,7 @@ jobs:
       DOTENV_PATH: .env.staging
       MONITOR_ID: '41776000000276110'
       HOST: ${{ secrets.HOST_STAG }}
-      REMOTE_PATH: '/home/ubuntu/test-code'
+      REMOTE_PATH: '/home/ubuntu/tes'
       ARTIFACT_PATH: '/home/ubuntu/artifact/guest-connect-survey-form'
     steps:
       - name: Checkout Code
@@ -111,6 +111,40 @@ jobs:
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
+
+      - name: Send failure email via SendGrid
+        if: failure()
+        env:
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          MAIL_FROM: ${{ vars.SENDGRID_FROM_EMAIL }}
+          MAIL_TO: ${{ vars.MAIL_TO }}
+        run: |
+          TO_JSON=$(echo "$MAIL_TO" | awk -F, '{
+            for (i=1; i<=NF; i++)
+              printf("{\"email\":\"%s\"}%s", $i, (i<NF?",":""))
+          }')
+
+          curl -X POST https://api.sendgrid.com/v3/mail/send \
+            -H "Authorization: Bearer $SENDGRID_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"personalizations\": [
+                {
+                  \"to\": [$TO_JSON],
+                  \"subject\": \"❌ Staging Deployment Failed\"
+                }
+              ],
+              \"from\": {
+                \"email\": \"$MAIL_FROM\"
+              },
+              \"content\": [
+                {
+                  \"type\": \"text/plain\",
+                  \"value\": \"Pipeline Status: FAILED\n\nWorkflow: $GITHUB_WORKFLOW\nRepository: $GITHUB_REPOSITORY\nBranch: stage\nEnvironment: staging\n\nCheck logs:\n$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"
+                }
+              ]
+            }"
+
 
     
       
