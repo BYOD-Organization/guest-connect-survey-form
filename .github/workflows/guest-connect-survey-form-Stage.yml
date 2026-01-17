@@ -74,7 +74,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }} << EOF
             export REMOTE_PATH=${{ env.REMOTE_PATH }}
             export ARTIFACT_PATH=${{ env.ARTIFACT_PATH }}
-          BACKUP_NAME="guest-connect-survey-form.tar"
+          BACKUP_NAME="guest-connect-survey-form.tar.gz"
           BACKUP_FILE="\$ARTIFACT_PATH/backup/\$BACKUP_NAME"
           
           if [ -d "\$REMOTE_PATH" ]; then
@@ -83,7 +83,9 @@ jobs:
                     echo "Previous backup found. Deleting \$BACKUP_FILE..."
                     rm -f "\$BACKUP_FILE"
               fi
-          tar --exclude='**/node_modules' -cvf "$BACKUP_FILE" -C "$REMOTE_PATH" .
+          mkdir -p "$ARTIFACT_PATH/backup"
+
+          tar --exclude='**/node_modules' -czf "$BACKUP_FILE" -C "$REMOTE_PATH" .
           echo "Backup saved to \$ARTIFACT_PATH/backup/\$BACKUP_NAME"
           else
           echo "No previous code found at \$REMOTE_PATH. Skipping backup."
