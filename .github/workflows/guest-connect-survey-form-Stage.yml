@@ -104,7 +104,7 @@ jobs:
                SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
                MAIL_FROM: ${{ vars.SENDGRID_FROM_EMAIL }}
                MAIL_TO: ${{ vars.MAIL_TO }}
-            run: |
+        run: |
                curl -X POST https://api.sendgrid.com/v3/mail/send \
                -H "Authorization: Bearer $SENDGRID_API_KEY" \
                 -H "Content-Type: application/json" \
