@@ -120,7 +120,7 @@ jobs:
               \"personalizations\": [
                 {
                   \"to\": [$TO_JSON],
-                  \"subject\": \"❌ Staging Deployment Failed\"
+                  \"subject\": \"GitHub Actions Notification\"
                 }
               ],
               \"from\": {
@@ -129,11 +129,10 @@ jobs:
               \"content\": [
                 {
                   \"type\": \"text/plain\",
-                  \"value\": \"Pipeline Status: FAILED\n\nWorkflow: $GITHUB_WORKFLOW\nRepository: $GITHUB_REPOSITORY\nBranch: stage\nEnvironment: staging\n\nCheck logs:\n$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"
+                  \"value\": \"Workflow: $GITHUB_WORKFLOW\nRepository: $GITHUB_REPOSITORY\nStatus: FAIL\nRun: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"
                 }
               ]
             }"
-
       - name: Revoke GitHub runner IP
         if: always()
         env:
