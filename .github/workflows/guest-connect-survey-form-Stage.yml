@@ -52,7 +52,7 @@ jobs:
           DOTENV_CONFIG_PATH: .env.staging
           NODE_OPTIONS: --max-old-space-size=4096
         run: |
-          CI='' npm run build-staging
+          CI='' npm run build
           if [ -d "dist" ]; then
             echo "Staging build completed successfully."
           else
@@ -154,6 +154,7 @@ jobs:
             cd "$ARTIFACT_PATH/backup"
             tar -zxvf guest-connect-survey-form.tar.gz
             sudo cp -rv guest-connect-survey-form/. "$REMOTE_PATH"
+            rm -rf guest-connect-survey-form
             sudo chown -R www-data:www-data "$REMOTE_PATH"
             sudo chmod -R 775 "$REMOTE_PATH"
             sudo systemctl reload apache2
