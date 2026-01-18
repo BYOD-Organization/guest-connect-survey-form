@@ -16,6 +16,7 @@ jobs:
       HOST: ${{ secrets.HOST_STAG }}
       REMOTE_PATH: '/home/ubuntu/tes-code'
       ARTIFACT_PATH: '/home/ubuntu/artifact/guest-connect-survey-form'
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -23,6 +24,7 @@ jobs:
       - name: Get runner IP
         id: ip
         uses: haythem/public-ip@v1.3
+
       - name: Allow GitHub runner IP in EC2 SG
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -39,10 +41,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20.14.0"
+
       - name: Install Dependencies
         run: |
-           unset CI
-           npm install --frozen-lockfile
+          unset CI
+          npm install --frozen-lockfile
 
       - name: Run Staging Build
         env:
@@ -56,98 +59,110 @@ jobs:
             echo "::error::Build failed: 'Build' directory not found."
             exit 1
           fi
+
       - name: Create full project artifact
         run: |
-         cd ../
-         tar -zcf guest-connect-survey-form.tar.gz guest-connect-survey-form
+          cd ../
+          tar -zcf guest-connect-survey-form.tar.gz guest-connect-survey-form
+
       - name: Transfer build to remote server
         run: |
           cd ../
           echo "${{ secrets.KEY }}" > private_key.pem
           chmod 600 private_key.pem
-          scp -o StrictHostKeyChecking=no -i private_key.pem /home/runner/work/guest-connect-survey-form/guest-connect-survey-form.tar.gz ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }}:${{ env.ARTIFACT_PATH }}
+          scp -o StrictHostKeyChecking=no -i private_key.pem \
+            /home/runner/work/guest-connect-survey-form/guest-connect-survey-form.tar.gz \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }}:${{ env.ARTIFACT_PATH }}
           rm -f private_key.pem
+
       - name: Deploy and restart Apache
         run: |
           echo "${{ secrets.KEY }}" > private_key.pem
           chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }} << EOF
+          ssh -o StrictHostKeyChecking=no -i private_key.pem \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }} << EOF
             export REMOTE_PATH=${{ env.REMOTE_PATH }}
             export ARTIFACT_PATH=${{ env.ARTIFACT_PATH }}
-          BACKUP_NAME="guest-connect-survey-form.tar.gz"
-          BACKUP_FILE="\$ARTIFACT_PATH/backup/\$BACKUP_NAME"
-          
-          if [ -d "\$REMOTE_PATH" ]; then
-          echo "Backing up existing code..."
-              if [ -f "\$BACKUP_FILE" ]; then
-                    echo "Previous backup found. Deleting \$BACKUP_FILE..."
-                    rm -f "\$BACKUP_FILE"
-              fi
-          
 
-          tar \
-          --exclude='node_modules' \
-          -czf "\$BACKUP_FILE" \
-          -C "\$REMOTE_PATH" .
-          echo "Backup saved to \$ARTIFACT_PATH/backup/\$BACKUP_NAME"
-          else
-          echo "No previous code found at \$REMOTE_PATH. Skipping backup."
-          fi
-          cd \$ARTIFACT_PATH
-          tar -zxvf guest-connect-survey-form.tar.gz
-          sudo cp -rv \$ARTIFACT_PATH/guest-connect-survey-form/. \$REMOTE_PATH
-          sudo chown -R www-data:www-data \$REMOTE_PATH
-          sudo chmod -R 775 \$REMOTE_PATH
-          rm -rf guest-connect-survey-form
-          sudo systemctl reload apache2.service
-          sudo systemctl status apache2.service
+            BACKUP_NAME="guest-connect-survey-form.tar.gz"
+            BACKUP_FILE="\$ARTIFACT_PATH/backup/\$BACKUP_NAME"
+
+            if [ -d "\$REMOTE_PATH" ]; then
+              echo "Backing up existing code..."
+              if [ -f "\$BACKUP_FILE" ]; then
+                echo "Previous backup found. Deleting \$BACKUP_FILE..."
+                rm -f "\$BACKUP_FILE"
+              fi
+
+              tar --exclude='node_modules' -czf "\$BACKUP_FILE" -C "\$REMOTE_PATH" .
+              echo "Backup saved to \$ARTIFACT_PATH/backup/\$BACKUP_NAME"
+            else
+              echo "No previous code found at \$REMOTE_PATH. Skipping backup."
+            fi
+
+            cd \$ARTIFACT_PATH
+            tar -zxvf guest-connect-survey-form.tar.gz
+            sudo cp -rv \$ARTIFACT_PATH/guest-connect-survey-form/. \$REMOTE_PATH
+            sudo chown -R www-data:www-data \$REMOTE_PATH
+            sudo chmod -R 775 \$REMOTE_PATH
+            rm -rf guest-connect-survey-form
+            sudo systemctl reload apache2.service
+            sudo systemctl status apache2.service
           EOF
           rm -f private_key.pem
+
       - name: Send failure email via SendGrid
-
         if: failure()
-
         env:
-
-               SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-
-               MAIL_FROM: ${{ vars.SENDGRID_FROM_EMAIL }}
-
-               MAIL_TO: ${{ vars.MAIL_TO }}
-
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          MAIL_FROM: ${{ vars.SENDGRID_FROM_EMAIL }}
+          MAIL_TO: ${{ vars.MAIL_TO }}
         run: |
+          curl -X POST "https://api.sendgrid.com/v3/mail/send" \
+            -H "Authorization: Bearer $SENDGRID_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"personalizations\": [{\"to\": [{\"email\": \"$MAIL_TO\"}]}],
+              \"from\": {\"email\": \"$MAIL_FROM\"},
+              \"subject\": \"Stage Deployment Failed\",
+              \"content\": [{
+                \"type\": \"text/plain\",
+                \"value\": \"Deployment failed. Rollback is being executed.\"
+              }]
+            }"
 
-              curl -X POST "https://api.sendgrid.com/v3/mail/send" \
-                 -H "Authorization: Bearer $SENDGRID_API_KEY" \
-                 -H "Content-Type: application/json" \
-                 -d "{
-                  \"personalizations\": [{\"to\": [{\"email\": \"$MAIL_TO\"}]}],
-                   \"from\": {\"email\": \"$MAIL_FROM\"},
-                   \"subject\": \"Stage Deployment Failed (Rollback Executed)\",
-                   \"content\": [{\"type\": \"text/plain\",\"value\": \"Deployment failed health check and rollback was executed.\"}]
-                    }"
-                 export REMOTE_PATH=${{ env.REMOTE_PATH }}
+      - name: Rollback deployment on EC2
+        if: failure()
+        run: |
+          echo "${{ secrets.KEY }}" > private_key.pem
+          chmod 600 private_key.pem
 
-                 export ARTIFACT_PATH=${{ env.ARTIFACT_PATH }}
+          ssh -o StrictHostKeyChecking=no -i private_key.pem \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }} << 'EOF'
+            REMOTE_PATH="/home/ubuntu/tes-code"
+            ARTIFACT_PATH="/home/ubuntu/artifact/guest-connect-survey-form"
+            BACKUP_FILE="$ARTIFACT_PATH/backup/guest-connect-survey-form.tar.gz"
 
-                 BACKUP_NAME="guest-connect-survey-form.tar"
+            echo "Starting rollback..."
 
-                 BACKUP_FILE="\$ARTIFACT_PATH/backup/\$BACKUP_NAME"
+            if [ ! -f "$BACKUP_FILE" ]; then
+              echo "Backup not found. Rollback aborted."
+              exit 1
+            fi
 
-                 cd \$ARTIFACT_PATH/backup
+            sudo rm -rf "${REMOTE_PATH:?}/"*
+            cd "$ARTIFACT_PATH/backup"
+            tar -zxvf guest-connect-survey-form.tar.gz
+            sudo cp -rv guest-connect-survey-form/. "$REMOTE_PATH"
+            sudo chown -R www-data:www-data "$REMOTE_PATH"
+            sudo chmod -R 775 "$REMOTE_PATH"
+            sudo systemctl reload apache2
 
-                  sudo rm -rf "${REMOTE_PATH:?}/"*
+            echo "Rollback completed successfully"
+          EOF
 
-                  tar -zxvf guest-connect-survey-form.tar.gz
+          rm -f private_key.pem
 
-                  sudo cp -rv \$ARTIFACT_PATH/backup/guest-connect-survey-form/. \$REMOTE_PATH
-
-                  sudo chown -R www-data:www-data \$REMOTE_PATH
-
-                  sudo chmod -R 775 \$REMOTE_PATH
- 
-
-                
       - name: Revoke GitHub runner IP
         if: always()
         env:
@@ -160,7 +175,3 @@ jobs:
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
-
-
-    
-      
