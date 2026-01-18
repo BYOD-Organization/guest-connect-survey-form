@@ -118,7 +118,7 @@ jobs:
           MAIL_FROM: ${{ vars.SENDGRID_FROM_EMAIL }}
           MAIL_TO: ${{ vars.MAIL_TO }}
         run: |
-          curl -X POST "https://api.sendgrid.com/v3/mail/send" \
+          curl -v -X POST "https://api.sendgrid.com/v3/mail/send" \
             -H "Authorization: Bearer $SENDGRID_API_KEY" \
             -H "Content-Type: application/json" \
             -d "{
