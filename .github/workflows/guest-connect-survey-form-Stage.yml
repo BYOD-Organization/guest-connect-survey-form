@@ -153,8 +153,8 @@ jobs:
             sudo rm -rf "${REMOTE_PATH:?}/"*
             cd "$ARTIFACT_PATH/backup"
             tar -zxvf guest-connect-survey-form.tar.gz
-            sudo cp -rv guest-connect-survey-form/. "$REMOTE_PATH"
-            rm -rf guest-connect-survey-form
+            rsync -rLv --exclude='guest-connect-survey-form.tar.gz' ./ "${REMOTE_PATH:?}/"
+            find . -mindepth 1 ! -name 'guest-connect-survey-form.tar.gz' -exec rm -rf {} +
             sudo chown -R www-data:www-data "$REMOTE_PATH"
             sudo chmod -R 775 "$REMOTE_PATH"
             sudo systemctl reload apache2
