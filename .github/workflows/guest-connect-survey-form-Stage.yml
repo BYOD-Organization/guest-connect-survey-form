@@ -110,6 +110,43 @@ jobs:
             sudo systemctl status apache2.service
           EOF
           rm -f private_key.pem
+      - name: Smart Health Check
+        id: health
+        run: |
+          echo "Waiting 5 seconds for Apache to fully restart..."
+          sleep 5
+
+          URL="https://survey.guestconnect.stage.byod.ai/?nocache=${MY_TS}"
+          MAX_RETRIES=5
+          RETRY_DELAY=3
+          SUCCESS=false
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "Checking site health, attempt $i..."
+            
+            RESPONSE=$(curl -s -w "%{http_code}" -o temp_response.txt $URL)
+            HTTP_CODE="${RESPONSE: -3}"  # last 3 chars = status code
+            CONTENT=$(cat temp_response.txt)
+
+            echo "HTTP Status: $HTTP_CODE"
+
+            if  [[ "$HTTP_CODE" == "200" ]]; then
+              SUCCESS=true
+              echo "Site is healthy!"
+              break
+            else
+              echo "Site not healthy yet. Retrying in $RETRY_DELAY seconds..."
+              sleep $RETRY_DELAY
+            fi
+          done
+
+          rm -f temp_response.txt
+          if [ "$SUCCESS" != true ]; then
+                 echo "::error::Site health check failed."
+          exit 1
+          fi
+
+    
 
       - name: Send failure email via SendGrid
         if: failure()
@@ -132,7 +169,7 @@ jobs:
             }"
 
       - name: Rollback deployment on EC2
-        if: failure()
+        if: steps.health.conclusion == 'failure'
         run: |
           echo "${{ secrets.KEY }}" > private_key.pem
           chmod 600 private_key.pem
