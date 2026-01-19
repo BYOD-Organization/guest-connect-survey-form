@@ -51,8 +51,8 @@ jobs:
           ACCESS_TOKEN=$(cat access_token.txt)
           START_TS=$(TZ="Asia/Kolkata" date -d "2 minutes" +%s)
           current_date=$(TZ="Asia/Kolkata" date +"%Y-%m-%d")
-          start_time=$(TZ="Asia/Kolkata" date -d "2 minutes" +"%H:%M")
-          end_time=$(TZ="Asia/Kolkata" date -d "60 minutes" +"%H:%M")
+          start_time=$(TZ="Asia/Kolkata" date -d "5 minutes" +"%H:%M")
+          end_time=$(TZ="Asia/Kolkata" date -d "90 minutes" +"%H:%M")
           response=$(curl -s https://www.site24x7.in/api/maintenance \
            -H "Content-Type: application/json;charset=UTF-8" \
            -H "Accept: application/json; version=2.0" \
