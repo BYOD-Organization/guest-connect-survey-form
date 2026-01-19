@@ -12,7 +12,7 @@ jobs:
     env:
       ENVIRONMENT: staging
       DOTENV_PATH: .env.staging
-      MONITOR_ID: '41776000000276110'
+      MONITOR_ID: '41776000001533005'
       HOST: ${{ secrets.HOST_STAG }}
       REMOTE_PATH: '/home/ubuntu/tes-code'
       ARTIFACT_PATH: '/home/ubuntu/artifact/guest-connect-survey-form'
@@ -36,6 +36,54 @@ jobs:
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: Get Zoho OAuth Token
+        id: zoho_token
+        run: |
+          curl -s https://accounts.zoho.in/oauth/v2/token \
+            -X POST \
+            -d "client_id=${{ secrets.ZOHO_CLIENT_ID }}" \
+            -d "client_secret=${{ secrets.ZOHO_CLIENT_SECRET }}" \
+            -d "refresh_token=${{ secrets.ZOHO_REFRESH_TOKEN }}" \
+            -d "grant_type=refresh_token" | jq -r '.access_token' > access_token.txt
+      - name: Setup Site24x7 Maintenance
+        id: setup_maintenance
+        run: |
+          ACCESS_TOKEN=$(cat access_token.txt)
+          START_TS=$(TZ="Asia/Kolkata" date -d "2 minutes" +%s)
+          current_date=$(TZ="Asia/Kolkata" date +"%Y-%m-%d")
+          start_time=$(TZ="Asia/Kolkata" date -d "2 minutes" +"%H:%M")
+          end_time=$(TZ="Asia/Kolkata" date -d "60 minutes" +"%H:%M")
+          response=$(curl -s https://www.site24x7.in/api/maintenance \
+            -H "Content-Type: application/json;charset=UTF-8" \
+            -H "Accept: application/json; version=2.0" \
+            -H "Authorization: Zoho-oauthtoken $ACCESS_TOKEN" \
+            -H "Cookie: zaaid=60031287618" \
+            -d "{
+              \"maintenance_type\": 3,
+              \"selection_type\": 2,
+              \"start_time\": \"$start_time\",
+              \"end_time\": \"$end_time\",
+              \"display_name\": \"mabel.stage.byod.ai - $(TZ="Asia/Kolkata" date +"%d %b %Y %H:%M")\",
+              \"description\": \"Maintenance scheduled at runtime\",
+              \"monitors\": [ \"41776000000276110\" ],
+              \"start_date\": \"$current_date\",
+              \"end_date\": \"$current_date\",
+              \"perform_monitoring\": true
+            }")
+          echo "$START_TS" > maintenance_start_ts.txt
+          echo $response | jq -r '.data.maintenance_id' > maintenance_id.txt
+      - name: Wait for maintenance window to start
+        run: |
+          START_TS=$(cat maintenance_start_ts.txt)
+          NOW=$(TZ="Asia/Kolkata" date +%s)
+ 
+          if [ "$NOW" -lt "$START_TS" ]; then
+            WAIT=$((START_TS - NOW))
+            echo " Waiting $WAIT seconds for maintenance window to start..."
+            sleep $WAIT
+          else
+              echo " Maintenance start time already passed"
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -195,3 +243,18 @@ jobs:
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: Delete Site24x7 Maintenance
+        if: always()
+        run: |
+          ACCESS_TOKEN=$(cat access_token.txt)
+          MAINTENANCE_ID=$(cat maintenance_id.txt)
+          if [ -n "$MAINTENANCE_ID" ]; then
+            curl -s https://www.site24x7.in/api/maintenance/$MAINTENANCE_ID \
+              -X DELETE \
+              -H "Content-Type: application/json;charset=UTF-8" \
+              -H "Accept: application/json; version=2.0" \
+              -H "Authorization: Zoho-oauthtoken $ACCESS_TOKEN" \
+              -H "Cookie: zaaid=60031287618"
+          else
+            echo "No maintenance ID found to delete"
+          fi
