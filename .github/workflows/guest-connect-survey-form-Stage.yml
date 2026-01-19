@@ -63,9 +63,9 @@ jobs:
               \"selection_type\": 2,
               \"start_time\": \"$start_time\",
               \"end_time\": \"$end_time\",
-              \"display_name\": \"mabel.stage.byod.ai - $(TZ="Asia/Kolkata" date +"%d %b %Y %H:%M")\",
+              \"display_name\": \"survey.guestconnect.stage.byod.ai - $(TZ="Asia/Kolkata" date +"%d %b %Y %H:%M")\",
               \"description\": \"Maintenance scheduled at runtime\",
-              \"monitors\": [ \"41776000000276110\" ],
+              \"monitors\": [ \"41776000001533005\" ],
               \"start_date\": \"$current_date\",
               \"end_date\": \"$current_date\",
               \"perform_monitoring\": true
