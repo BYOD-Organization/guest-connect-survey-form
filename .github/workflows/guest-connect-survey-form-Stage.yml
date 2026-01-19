@@ -54,23 +54,23 @@ jobs:
           start_time=$(TZ="Asia/Kolkata" date -d "2 minutes" +"%H:%M")
           end_time=$(TZ="Asia/Kolkata" date -d "60 minutes" +"%H:%M")
           response=$(curl -s https://www.site24x7.in/api/maintenance \
-            -H "Content-Type: application/json;charset=UTF-8" \
-            -H "Accept: application/json; version=2.0" \
-            -H "Authorization: Zoho-oauthtoken $ACCESS_TOKEN" \
-            -H "Cookie: zaaid=60031287618" \
-            -d "{
-              \"maintenance_type\": 3,
-              \"selection_type\": 2,
-              \"start_time\": \"$start_time\",
-              \"end_time\": \"$end_time\",
-              \"display_name\": \"survey.guestconnect.stage.byod.ai - $(TZ="Asia/Kolkata" date +"%d %b %Y %H:%M")\",
-              \"description\": \"Maintenance scheduled at runtime\",
-              \"monitors\": [ \"41776000001533005\" ],
-              \"start_date\": \"$current_date\",
-              \"end_date\": \"$current_date\",
-              \"perform_monitoring\": true
-            }")
-          echo "$START_TS" > maintenance_start_ts.txt
+           -H "Content-Type: application/json;charset=UTF-8" \
+           -H "Accept: application/json; version=2.0" \
+           -H "Authorization: Zoho-oauthtoken $ACCESS_TOKEN" \
+           -H "Cookie: zaaid=60031287618" \
+           -d "{
+             \"maintenance_type\": 3,
+             \"selection_type\": 2,
+             \"start_time\": \"$start_time\",
+             \"end_time\": \"$end_time\",
+             \"display_name\": \"survey.guestconnect.stage.byod.ai - $(TZ="Asia/Kolkata" date +"%d %b %Y %H:%M")\",
+             \"description\": \"Maintenance scheduled at runtime\",
+             \"monitors\": [ \"41776000001533005\" ],
+             \"start_date\": \"$current_date\",
+             \"end_date\": \"$current_date\",
+             \"perform_monitoring\": true
+           }")
+           echo "$START_TS" > maintenance_start_ts.txt
           echo $response | jq -r '.data.maintenance_id' > maintenance_id.txt
       - name: Wait for maintenance window to start
         run: |
