@@ -70,6 +70,8 @@ jobs:
              \"end_date\": \"$current_date\",
              \"perform_monitoring\": true
            }")
+           echo "Site24x7 response:"
+           echo "$response"
            echo "$START_TS" > maintenance_start_ts.txt
           echo $response | jq -r '.data.maintenance_id' > maintenance_id.txt
       - name: Wait for maintenance window to start
