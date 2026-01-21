@@ -49,6 +49,7 @@ jobs:
         id: setup_maintenance
         run: |
           ACCESS_TOKEN=$(cat access_token.txt)
+          START_TS=$(TZ="Asia/Kolkata" date -d "2 minutes" +%s)
           current_date=$(TZ="Asia/Kolkata" date +"%Y-%m-%d")
           start_time=$(TZ="Asia/Kolkata" date -d "2 minutes" +"%H:%M")
           end_time=$(TZ="Asia/Kolkata" date -d "60 minutes" +"%H:%M")
@@ -69,7 +70,20 @@ jobs:
              \"end_date\": \"$current_date\",
              \"perform_monitoring\": true
            }")
+          echo "$START_TS" > maintenance_start_ts.txt
           echo $response | jq -r '.data.maintenance_id' > maintenance_id.txt
+      - name: Wait for maintenance window to start
+        run: |
+          START_TS=$(cat maintenance_start_ts.txt)
+          NOW=$(TZ="Asia/Kolkata" date +%s)
+ 
+          if [ "$NOW" -lt "$START_TS" ]; then
+            WAIT=$((START_TS - NOW))
+            echo " Waiting $WAIT seconds for maintenance window to start..."
+            sleep $WAIT
+          else
+              echo " Maintenance start time already passed"
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
