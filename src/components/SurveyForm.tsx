@@ -519,12 +519,12 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 											name="name"
 											label="Name"
 											rules={[
-												{ required: true, message: "Please enter your name" }
+												{ required: true, message: "Please enter your name." }
 											]}
 											style={{ marginBottom: isMobile ? 12 : 16 }}
 										>
 											<Input
-												placeholder="Enter your full name"
+												placeholder="Enter your full name."
 												size={isMobile ? "middle" : "large"}
 											/>
 										</Form.Item>
@@ -533,7 +533,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 											name="email"
 											label="Email"
 											rules={[
-												{ required: true, message: "Please enter your email" },
+												{ required: true, message: "Please enter your email." },
 												{
 													validator: (_, value) => {
 														if (!value || isValidEmail(value)) {
@@ -549,7 +549,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 										>
 											<Input
 												type="email"
-												placeholder="Enter your email"
+												placeholder="Enter your email."
 												size={isMobile ? "middle" : "large"}
 											/>
 										</Form.Item>
@@ -560,7 +560,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 											rules={[
 												{
 													required: true,
-													message: "Please enter your phone number"
+													message: "Please enter your phone number."
 												},
 												{
 													validator: (_, value) => {
