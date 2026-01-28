@@ -181,7 +181,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 						rules={[
 							{
 								required: question.required,
-								message: "Please provide a rating"
+								message: "Please provide a rating."
 							}
 						]}
 					>
@@ -234,7 +234,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 						rules={[
 							{
 								required: question.required,
-								message: "Please select an option"
+								message: "Please select an option."
 							}
 						]}
 					>
@@ -263,7 +263,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 						rules={[
 							{
 								required: question.required,
-								message: "Please select an option"
+								message: "Please select an option."
 							}
 						]}
 					>
@@ -289,7 +289,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 						rules={[
 							{
 								required: question.required,
-								message: "Please provide an answer"
+								message: "Please provide an answer."
 							}
 						]}
 					>
@@ -304,10 +304,10 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 
 	const renderErrorMessage = () => {
 		const errorMessages = {
-			CAMPAIGN_INACTIVE: "This Feedback Survey is Not Active",
-			ALREADY_ENTERED_TODAY: "You have already entered this contest today",
+			CAMPAIGN_INACTIVE: "This Feedback Survey is Not Active.",
+			ALREADY_ENTERED_TODAY: "You have already entered this contest today.",
 			TOO_MANY_ATTEMPTS:
-				"You have made too many attempts to submit this Survey",
+				"You have made too many attempts to submit this Survey. Please try again later.",
 			INVALID_PARAMETERS: "Invalid survey parameters. Please check your link.",
 			SUBMISSION_ERROR:
 				"An error occurred while submitting your survey. Please try again.",
@@ -458,7 +458,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 							))
 						) : (
 							<Alert
-								message="Unable to load survey questions"
+								message="Unable to load survey questions."
 								type="error"
 								style={{ marginBottom: 24 }}
 							/>
@@ -540,7 +540,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 															return Promise.resolve();
 														}
 														return Promise.reject(
-															"Please enter a valid email address"
+															"Please enter a valid email address."
 														);
 													}
 												}
@@ -568,7 +568,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 															return Promise.resolve();
 														}
 														return Promise.reject(
-															"Please enter a valid phone number"
+															"Please enter a valid phone number."
 														);
 													}
 												}
