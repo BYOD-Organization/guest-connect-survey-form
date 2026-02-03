@@ -14,7 +14,7 @@ jobs:
       DOTENV_PATH: .env.staging
       MONITOR_ID: '41776000001533005'
       HOST: ${{ secrets.HOST_DEV }}
-      REMOTE_PATH: '/home/ubuntu/test-code'
+      REMOTE_PATH: '/var/www/html/guest-connect-survey-form'
       ARTIFACT_PATH: '/home/ubuntu/artifact/guest-connect-survey-form'
 
     steps:
