@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:staging": "vite --mode staging",
     "build:production": "tsc -b && vite build",
     "build": "tsc -b && vite build --mode staging",
     "build:development": "tsc -b && vite build --mode development",
