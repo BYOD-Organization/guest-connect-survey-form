@@ -14,7 +14,7 @@ jobs:
       DOTENV_PATH: .env.production
       MONITOR_ID: '41776000001601005'
       HOST: ${{ secrets.HOST_PROD}}
-      REMOTE_PATH: '/home/ubuntu/test-pipeline'
+      REMOTE_PATH: '/var/www/html/guest-connect-survey-form'
       ARTIFACT_PATH: '/home/ubuntu/artifact/guest-connect-survey-form'
 
     steps:
@@ -206,7 +206,7 @@ jobs:
 
           ssh -o StrictHostKeyChecking=no -i private_key.pem \
             ${{ secrets.USERNAME }}@${{ secrets.HOST_PROD}} << 'EOF'
-            REMOTE_PATH="/home/ubuntu/test-pipeline"
+            REMOTE_PATH="/var/www/html/guest-connect-survey-form"
             ARTIFACT_PATH="/home/ubuntu/artifact/guest-connect-survey-form"
             BACKUP_FILE="$ARTIFACT_PATH/backup/guest-connect-survey-form.tar.gz"
 
