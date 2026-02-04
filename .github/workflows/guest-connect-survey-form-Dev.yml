@@ -206,7 +206,7 @@ jobs:
 
           ssh -o StrictHostKeyChecking=no -i private_key.pem \
             ${{ secrets.USERNAME }}@${{ secrets.HOST_DEV }} << 'EOF'
-            REMOTE_PATH="/home/ubuntu/tes-code"
+            REMOTE_PATH="/var/www/html/guest-connect-survey-form"
             ARTIFACT_PATH="/home/ubuntu/artifact/guest-connect-survey-form"
             BACKUP_FILE="$ARTIFACT_PATH/backup/guest-connect-survey-form.tar.gz"
 
