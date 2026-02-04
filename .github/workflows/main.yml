@@ -98,7 +98,7 @@ jobs:
           DOTENV_CONFIG_PATH: .env.production
           NODE_OPTIONS: --max-old-space-size=4096
         run: |
-          CI='' npm run build
+          CI='' npm run build:production
           if [ -d "dist" ]; then
             echo "production build completed successfully."
           else
