@@ -32,7 +32,7 @@ jobs:
           AWS_REGION: 'us-east-2'
         run: |
           aws ec2 authorize-security-group-ingress \
-            --group-id sg-05a2f47265b8f4dbd \
+            --group-id sg-0c1ff494830e310a9 \
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
@@ -239,7 +239,7 @@ jobs:
           AWS_REGION: us-east-2
         run: |
           aws ec2 revoke-security-group-ingress \
-            --group-id sg-05a2f47265b8f4dbd \
+            --group-id sg-0c1ff494830e310a9 \
             --protocol tcp \
             --port 22 \
             --cidr ${{ steps.ip.outputs.ipv4 }}/32
