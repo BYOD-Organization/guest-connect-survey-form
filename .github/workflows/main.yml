@@ -116,7 +116,7 @@ jobs:
       - name: Transfer build to remote server
         run: |
           cd ../
-          echo "${{ secrets.KEY_PROD_PROD }}" > private_key.pem
+          echo "${{ secrets.KEY_PROD }}" > private_key.pem
           chmod 600 private_key.pem
           scp -o StrictHostKeyChecking=no -i private_key.pem \
             /home/runner/work/guest-connect-survey-form/guest-connect-survey-form.tar.gz \
