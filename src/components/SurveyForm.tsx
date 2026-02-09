@@ -279,6 +279,28 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 					</Form.Item>
 				);
 
+			case "comment":
+				return (
+					<Form.Item
+						key={question.id}
+						name={`question_${question.id}`}
+						label={question.question}
+						rules={[
+							{
+								required: question.required,
+								message: "Please provide a comment."
+							}
+						]}
+					>
+						<TextArea
+							rows={isMobile ? 3 : 4}
+							placeholder="Enter your comment"
+							maxLength={256}
+							showCount
+						/>
+					</Form.Item>
+				);
+
 			case "text":
 			default:
 				return (

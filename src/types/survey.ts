@@ -1,6 +1,6 @@
 export interface Question {
   id: string | number;
-  type: 'rating' | 'text' | 'multipleChoice' | 'yesNo';
+  type: 'rating' | 'text' | 'multipleChoice' | 'yesNo' | 'comment';
   question: string;
   required: boolean;
   options?: string[]; // For multiple choice questions
@@ -13,7 +13,7 @@ export interface ApiQuestion {
   '@id'?: string;
   id: number;
   questionText: string;
-  questionType: 'rating' | 'text' | 'multiplechoice' | 'yesno';
+  questionType: 'rating' | 'text' | 'multiplechoice' | 'yesno' | 'comment';
   sortOrder: number;
   options?: string[];
   required?: boolean;
