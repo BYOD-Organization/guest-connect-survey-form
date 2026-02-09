@@ -97,10 +97,10 @@ jobs:
 
       - name: Run Staging Build
         env:
-          DOTENV_CONFIG_PATH: .env.staging
+          DOTENV_CONFIG_PATH: .env.development
           NODE_OPTIONS: --max-old-space-size=4096
         run: |
-          CI='' npm run build
+          CI='' npm run build:development
           if [ -d "dist" ]; then
             echo "Dev build completed successfully."
           else
