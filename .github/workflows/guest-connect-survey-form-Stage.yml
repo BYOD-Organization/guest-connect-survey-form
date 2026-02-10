@@ -1,0 +1,260 @@
+name: Build and Deploy (Staging Only)
+
+on:
+  push:
+    branches:
+      - stage
+
+jobs:
+  build-and-deploy-staging:
+    runs-on: ubuntu-latest
+
+    env:
+      ENVIRONMENT: staging
+      DOTENV_PATH: .env.staging
+      MONITOR_ID: '41776000001533005'
+      HOST: ${{ secrets.HOST_STAG }}
+      REMOTE_PATH: '/var/www/html/guest-connect-survey-form'
+      ARTIFACT_PATH: '/home/ubuntu/artifact/guest-connect-survey-form'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Get runner IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Allow GitHub runner IP in EC2 SG
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'us-east-2'
+        run: |
+          aws ec2 authorize-security-group-ingress \
+            --group-id sg-05a2f47265b8f4dbd \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: Get Zoho OAuth Token
+        id: zoho_token
+        run: |
+          curl -s https://accounts.zoho.in/oauth/v2/token \
+            -X POST \
+            -d "client_id=${{ secrets.ZOHO_CLIENT_ID }}" \
+            -d "client_secret=${{ secrets.ZOHO_CLIENT_SECRET }}" \
+            -d "refresh_token=${{ secrets.ZOHO_REFRESH_TOKEN }}" \
+            -d "grant_type=refresh_token" | jq -r '.access_token' > access_token.txt
+      - name: Setup Site24x7 Maintenance
+        id: setup_maintenance
+        run: |
+          ACCESS_TOKEN=$(cat access_token.txt)
+          START_TS=$(TZ="Asia/Kolkata" date -d "2 minutes" +%s)
+          current_date=$(TZ="Asia/Kolkata" date +"%Y-%m-%d")
+          start_time=$(TZ="Asia/Kolkata" date -d "2 minutes" +"%H:%M")
+          end_time=$(TZ="Asia/Kolkata" date -d "60 minutes" +"%H:%M")
+          response=$(curl -s https://www.site24x7.in/api/maintenance \
+           -H "Content-Type: application/json;charset=UTF-8" \
+           -H "Accept: application/json; version=2.0" \
+           -H "Authorization: Zoho-oauthtoken $ACCESS_TOKEN" \
+           -H "Cookie: zaaid=60031287618" \
+           -d "{
+             \"maintenance_type\": 3,
+             \"selection_type\": 2,
+             \"start_time\": \"$start_time\",
+             \"end_time\": \"$end_time\",
+             \"display_name\": \"Website - survey.guestconnect.stage.byod.ai - $(TZ="Asia/Kolkata" date +"%d %b %Y %H:%M")\",
+             \"description\": \"Maintenance scheduled at runtime\",
+             \"monitors\": [ \"41776000001533005\" ],
+             \"start_date\": \"$current_date\",
+             \"end_date\": \"$current_date\",
+             \"perform_monitoring\": true
+           }")
+          echo "$START_TS" > maintenance_start_ts.txt
+          echo $response | jq -r '.data.maintenance_id' > maintenance_id.txt
+      - name: Wait for maintenance window to start
+        run: |
+          START_TS=$(cat maintenance_start_ts.txt)
+          NOW=$(TZ="Asia/Kolkata" date +%s)
+ 
+          if [ "$NOW" -lt "$START_TS" ]; then
+            WAIT=$((START_TS - NOW))
+            echo " Waiting $WAIT seconds for maintenance window to start..."
+            sleep $WAIT
+          else
+              echo " Maintenance start time already passed"
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20.14.0"
+
+      - name: Install Dependencies
+        run: |
+          unset CI
+          npm install --frozen-lockfile
+
+      - name: Run Staging Build
+        env:
+          DOTENV_CONFIG_PATH: .env.staging
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          CI='' npm run build
+          if [ -d "dist" ]; then
+            echo "Staging build completed successfully."
+          else
+            echo "::error::Build failed: 'Build' directory not found."
+            exit 1
+          fi
+
+      - name: Create full project artifact
+        run: |
+          cd ../
+          tar -zcf guest-connect-survey-form.tar.gz guest-connect-survey-form
+
+      - name: Transfer build to remote server
+        run: |
+          cd ../
+          echo "${{ secrets.KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          scp -o StrictHostKeyChecking=no -i private_key.pem \
+            /home/runner/work/guest-connect-survey-form/guest-connect-survey-form.tar.gz \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }}:${{ env.ARTIFACT_PATH }}
+          rm -f private_key.pem
+
+      - name: Deploy and restart Apache
+        run: |
+          echo "${{ secrets.KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+          ssh -o StrictHostKeyChecking=no -i private_key.pem \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }} << EOF
+            export REMOTE_PATH=${{ env.REMOTE_PATH }}
+            export ARTIFACT_PATH=${{ env.ARTIFACT_PATH }}
+
+            BACKUP_NAME="guest-connect-survey-form.tar.gz"
+            BACKUP_FILE="\$ARTIFACT_PATH/backup/\$BACKUP_NAME"
+
+            if [ -d "\$REMOTE_PATH" ]; then
+              echo "Backing up existing code..."
+              if [ -f "\$BACKUP_FILE" ]; then
+                echo "Previous backup found. Deleting \$BACKUP_FILE..."
+                rm -f "\$BACKUP_FILE"
+              fi
+
+              tar --exclude='node_modules' -czf "\$BACKUP_FILE" -C "\$REMOTE_PATH" .
+              echo "Backup saved to \$ARTIFACT_PATH/backup/\$BACKUP_NAME"
+            else
+              echo "No previous code found at \$REMOTE_PATH. Skipping backup."
+            fi
+
+            cd \$ARTIFACT_PATH
+            tar -zxvf guest-connect-survey-form.tar.gz
+            sudo cp -rv \$ARTIFACT_PATH/guest-connect-survey-form/. \$REMOTE_PATH
+            sudo chown -R www-data:www-data \$REMOTE_PATH
+            sudo chmod -R 775 \$REMOTE_PATH
+            rm -rf guest-connect-survey-form
+            sudo systemctl reload apache2.service
+            sudo systemctl status apache2.service
+          EOF
+          rm -f private_key.pem
+      - name: Smart Health Check
+        id: health
+        run: |
+          echo "Waiting 5 seconds for Apache to fully restart..."
+          sleep 5
+
+          URL="https://survey.guestconnect.stage.byod.ai/?nocache=${MY_TS}"
+          MAX_RETRIES=5
+          RETRY_DELAY=3
+          SUCCESS=false
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "Checking site health, attempt $i..."
+            
+            RESPONSE=$(curl -s -w "%{http_code}" -o temp_response.txt $URL)
+            HTTP_CODE="${RESPONSE: -3}"  # last 3 chars = status code
+            CONTENT=$(cat temp_response.txt)
+
+            echo "HTTP Status: $HTTP_CODE"
+
+            if  [[ "$HTTP_CODE" == "200" ]]; then
+              SUCCESS=true
+              echo "Site is healthy!"
+              break
+            else
+              echo "Site not healthy yet. Retrying in $RETRY_DELAY seconds..."
+              sleep $RETRY_DELAY
+            fi
+          done
+
+          rm -f temp_response.txt
+          if [ "$SUCCESS" != true ]; then
+                 echo "::error::Site health check failed."
+          exit 1
+          fi
+
+    
+
+     
+
+      - name: Rollback deployment on EC2
+        if: steps.health.conclusion == 'failure'
+        run: |
+          echo "${{ secrets.KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
+          ssh -o StrictHostKeyChecking=no -i private_key.pem \
+            ${{ secrets.USERNAME }}@${{ secrets.HOST_STAG }} << 'EOF'
+            REMOTE_PATH="/home/ubuntu/tes-code"
+            ARTIFACT_PATH="/home/ubuntu/artifact/guest-connect-survey-form"
+            BACKUP_FILE="$ARTIFACT_PATH/backup/guest-connect-survey-form.tar.gz"
+
+            echo "Starting rollback..."
+
+            if [ ! -f "$BACKUP_FILE" ]; then
+              echo "Backup not found. Rollback aborted."
+              exit 1
+            fi
+
+            sudo rm -rf "${REMOTE_PATH:?}/"*
+            cd "$ARTIFACT_PATH/backup"
+            tar -zxvf guest-connect-survey-form.tar.gz
+            rsync -rLv --exclude='guest-connect-survey-form.tar.gz' ./ "${REMOTE_PATH:?}/"
+            find . -mindepth 1 ! -name 'guest-connect-survey-form.tar.gz' -exec rm -rf {} +
+            sudo chown -R www-data:www-data "$REMOTE_PATH"
+            sudo chmod -R 775 "$REMOTE_PATH"
+            sudo systemctl reload apache2
+
+            echo "Rollback completed successfully"
+          EOF
+
+          rm -f private_key.pem
+
+      - name: Revoke GitHub runner IP
+        if: always()
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-2
+        run: |
+          aws ec2 revoke-security-group-ingress \
+            --group-id sg-05a2f47265b8f4dbd \
+            --protocol tcp \
+            --port 22 \
+            --cidr ${{ steps.ip.outputs.ipv4 }}/32
+      - name: Delete Site24x7 Maintenance
+        if: always()
+        run: |
+          ACCESS_TOKEN=$(cat access_token.txt)
+          MAINTENANCE_ID=$(cat maintenance_id.txt)
+          if [ -n "$MAINTENANCE_ID" ]; then
+            curl -s https://www.site24x7.in/api/maintenance/$MAINTENANCE_ID \
+              -X DELETE \
+              -H "Content-Type: application/json;charset=UTF-8" \
+              -H "Accept: application/json; version=2.0" \
+              -H "Authorization: Zoho-oauthtoken $ACCESS_TOKEN" \
+              -H "Cookie: zaaid=60031287618"
+          else
+            echo "No maintenance ID found to delete"
+          fi
