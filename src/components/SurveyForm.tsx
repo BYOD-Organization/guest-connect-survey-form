@@ -350,11 +350,6 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 					<Space direction="vertical" size="large" style={{ width: "100%" }}>
 						<CheckCircleOutlined style={{ fontSize: 64, color: "#52c41a" }} />
 						<Title level={3}>Thank you for your feedback!</Title>
-						{campaign?.reward &&
-							!optOutOfContest &&
-							campaign.rewardDetailsText && (
-								<Paragraph>{campaign.rewardDetailsText}</Paragraph>
-							)}
 					</Space>
 				</Card>
 			</div>
