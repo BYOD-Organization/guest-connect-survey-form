@@ -96,6 +96,9 @@ jobs:
           npm install --frozen-lockfile
 
       - name: Run Unit Tests
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+          CI: true
         run: |
           npm run test:run
 

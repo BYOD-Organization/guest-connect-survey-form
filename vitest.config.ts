@@ -8,6 +8,22 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
+    pool: process.env.CI ? 'threads' : 'forks',
+    poolOptions: {
+      threads: {
+        singleThread: true,
+      },
+      forks: {
+        singleFork: true,
+      },
+    },
+    maxConcurrency: 1,
+    minWorkers: 1,
+    maxWorkers: 1,
+    testTimeout: 30000,
+    hookTimeout: 30000,
+    teardownTimeout: 10000,
+    isolate: true,
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
