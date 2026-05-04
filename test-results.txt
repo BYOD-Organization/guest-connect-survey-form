@@ -807,3 +807,420 @@ Warning: [antd: Space] `direction` is deprecated. Please use `orientation` inste
 
 [1m[30m[42m PASS [49m[39m[22m [32mWaiting for file changes...[39m
        [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+c[3J[1m[30m[44m RERUN [49m[39m[22m [34m[2msrc/components/SurveyForm.test.tsx [22m[34mx5 [34m[39m
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for inactive campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for expired campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for campaign not yet started
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle 429 rate limit error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle already submitted error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle generic API error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render campaign title and questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render rating question with emoji options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render text area for text questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should show reward details when reward exists
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should validate required fields before submission
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should require customer info when opting in for reward
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Multiple Choice Questions > should render multiple choice options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Yes/No Questions > should render yes/no options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should not show customer info fields when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Responsive Behavior > should render correctly on mobile viewport
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+ [32mΓ£ô[39m src/components/SurveyForm.test.tsx [2m([22m[2m23 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[33m 11207[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render campaign title and questions [33m 381[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render rating question with emoji options [33m 855[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should validate required fields before submission [33m 311[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should successfully submit survey without reward opt-in [33m 2282[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should hide customer info fields when opting out of contest [33m 803[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should handle submission errors gracefully [33m 1435[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render yes/no options [33m 575[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should submit survey without reward info when no reward available [33m 3136[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m22 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (23)[39m
+[2m   Start at [22m 17:07:50
+[2m   Duration [22m 23.93s
+
+[1m[30m[42m PASS [49m[39m[22m [32mWaiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+c[3J[1m[30m[44m RERUN [49m[39m[22m [34m[2msrc/components/SurveyForm.test.tsx [22m[34mx6 [34m[39m
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for inactive campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for expired campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for campaign not yet started
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle 429 rate limit error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle already submitted error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle generic API error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render campaign title and questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render rating question with emoji options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render text area for text questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should show reward details when reward exists
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should validate required fields before submission
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should require customer info when opting in for reward
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Multiple Choice Questions > should render multiple choice options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Yes/No Questions > should render yes/no options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should not show customer info fields when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Responsive Behavior > should render correctly on mobile viewport
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+ [32mΓ£ô[39m src/components/SurveyForm.test.tsx [2m([22m[2m23 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[33m 24773[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should display loading spinner while fetching campaign [33m 770[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render campaign title and questions [33m 849[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render rating question with emoji options [33m 2440[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render text area for text questions [33m 365[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should show reward details when reward exists [33m 353[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should validate required fields before submission [33m 776[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should successfully submit survey without reward opt-in [33m 6501[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should require customer info when opting in for reward [33m 426[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should hide customer info fields when opting out of contest [33m 1330[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should handle submission errors gracefully [33m 4246[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render yes/no options [33m 954[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should submit survey without reward info when no reward available [33m 4332[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m22 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (23)[39m
+[2m   Start at [22m 17:09:46
+[2m   Duration [22m 56.82s
+
+[1m[30m[42m PASS [49m[39m[22m [32mWaiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+c[3J[1m[30m[44m RERUN [49m[39m[22m [34m[2msrc/components/SurveyForm.test.tsx [22m[34mx7 [34m[39m
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for inactive campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for expired campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for campaign not yet started
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle 429 rate limit error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle already submitted error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle generic API error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render campaign title and questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render rating question with emoji options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render text area for text questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should show reward details when reward exists
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should validate required fields before submission
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should require customer info when opting in for reward
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Multiple Choice Questions > should render multiple choice options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Yes/No Questions > should render yes/no options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should not show customer info fields when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Responsive Behavior > should render correctly on mobile viewport
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+ [32mΓ£ô[39m src/components/SurveyForm.test.tsx [2m([22m[2m23 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[33m 15295[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should display loading spinner while fetching campaign [33m 589[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render campaign title and questions [33m 1048[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render rating question with emoji options [33m 1156[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should validate required fields before submission [33m 340[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should successfully submit survey without reward opt-in [33m 3582[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should require customer info when opting in for reward [33m 347[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should hide customer info fields when opting out of contest [33m 1220[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should handle submission errors gracefully [33m 2490[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render yes/no options [33m 578[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should submit survey without reward info when no reward available [33m 2410[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m22 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (23)[39m
+[2m   Start at [22m 17:13:05
+[2m   Duration [22m 31.57s
+
+[1m[30m[42m PASS [49m[39m[22m [32mWaiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+c[3J[1m[30m[44m RERUN [49m[39m[22m [34m[2msrc/components/SurveyForm.test.tsx [22m[34mx8 [34m[39m
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for inactive campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for expired campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for campaign not yet started
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle 429 rate limit error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle already submitted error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle generic API error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render campaign title and questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render rating question with emoji options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render text area for text questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should show reward details when reward exists
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should validate required fields before submission
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should require customer info when opting in for reward
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Multiple Choice Questions > should render multiple choice options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Yes/No Questions > should render yes/no options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should not show customer info fields when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Responsive Behavior > should render correctly on mobile viewport
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+ [32mΓ£ô[39m src/components/SurveyForm.test.tsx [2m([22m[2m23 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[33m 14186[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should display loading spinner while fetching campaign [33m 666[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render campaign title and questions [33m 674[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render rating question with emoji options [33m 1640[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should validate required fields before submission [33m 456[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should successfully submit survey without reward opt-in [33m 3517[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should hide customer info fields when opting out of contest [33m 614[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should handle submission errors gracefully [33m 1989[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render yes/no options [33m 644[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should submit survey without reward info when no reward available [33m 2075[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m22 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (23)[39m
+[2m   Start at [22m 17:13:42
+[2m   Duration [22m 36.52s
+
+[1m[30m[42m PASS [49m[39m[22m [32mWaiting for file changes...[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m

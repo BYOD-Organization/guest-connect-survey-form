@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SurveyForm from './SurveyForm';
 import * as api from '../utils/api';
 import * as helpers from '../utils/helpers';
-import type { Campaign, Question } from '../../types/survey';
+import type { Campaign, Question } from '../types/survey';
 
 // Mock the API and helper functions
 vi.mock('../utils/api');
@@ -18,8 +18,10 @@ describe('SurveyForm', () => {
     active: true,
     startDate: '2026-01-01',
     endDate: '2026-12-31',
-    disclaimerText: 'Terms and conditions',
-    logoPath: '/logo.png',
+    guestConnectSetting: {
+      disclaimerText: 'Terms and conditions',
+      logoPath: '/logo.png',
+    },
     workplace: {
       '@id': '/api/workplaces/1',
       '@type': 'Workplace',
@@ -219,8 +221,23 @@ describe('SurveyForm', () => {
     beforeEach(() => {
       vi.mocked(api.fetchCampaign).mockResolvedValue(mockCampaign);
       vi.mocked(api.submitBasicSurveyInfo).mockResolvedValue({
-        id: 'submission-123',
-        createdAt: '2026-05-04T12:00:00Z',
+        id: 123,
+        submittedAt: '2026-05-04T12:00:00Z',
+        campaign: {
+          id: 1,
+          title: 'Test Survey',
+          startDate: '2026-01-01',
+          endDate: '2026-12-31',
+          reward: null,
+          winnersCount: 0,
+          uniqueUrlToken: 'test-token',
+          questions: [],
+        },
+        ipAddress: '127.0.0.1',
+        userAgent: 'test',
+        browser: 'chrome',
+        device: 'desktop',
+        rewardOptIn: false,
       });
       vi.mocked(api.submitSurveyAnswers).mockResolvedValue();
     });
@@ -483,8 +500,23 @@ describe('SurveyForm', () => {
       const user = userEvent.setup();
       vi.mocked(api.fetchCampaign).mockResolvedValue(campaignNoReward);
       vi.mocked(api.submitBasicSurveyInfo).mockResolvedValue({
-        id: 'submission-456',
-        createdAt: '2026-05-04T12:00:00Z',
+        id: 456,
+        submittedAt: '2026-05-04T12:00:00Z',
+        campaign: {
+          id: 1,
+          title: 'Test Survey',
+          startDate: '2026-01-01',
+          endDate: '2026-12-31',
+          reward: null,
+          winnersCount: 0,
+          uniqueUrlToken: 'test-token',
+          questions: [],
+        },
+        ipAddress: '127.0.0.1',
+        userAgent: 'test',
+        browser: 'chrome',
+        device: 'desktop',
+        rewardOptIn: false,
       });
       vi.mocked(api.submitSurveyAnswers).mockResolvedValue();
 
@@ -523,7 +555,7 @@ describe('SurveyForm', () => {
   describe('Responsive Behavior', () => {
     it('should render correctly on mobile viewport', async () => {
       // Mock mobile viewport
-      global.innerWidth = 500;
+      globalThis.innerWidth = 500;
       
       vi.mocked(api.fetchCampaign).mockResolvedValue(mockCampaign);
 
