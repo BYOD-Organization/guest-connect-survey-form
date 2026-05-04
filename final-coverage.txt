@@ -1,0 +1,223 @@
+
+> guest-connect-web@0.0.0 test:coverage
+> vitest run --coverage
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.5 [39m[90mC:/Users/akshat.mishra/Builds/byod/guest-connect-web[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32mΓ£ô[39m src/utils/helpers.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+ [32mΓ£ô[39m src/utils/api.test.ts [2m([22m[2m13 tests[22m[2m)[22m[32m 44[2mms[22m[39m
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mCampaign ID Extraction[2m > [22m[2mshould extract campaign ID from URL path
+[22m[39mmatch [
+  [32m'/campaign/tQr14flavBD2iN/v4syeL3lMZmJnTjdUTDBSYTVPSjB5VUFFNkE9PQ=='[39m,
+  [32m'tQr14flavBD2iN/v4syeL3lMZmJnTjdUTDBSYTVPSjB5VUFFNkE9PQ=='[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/tQr14flavBD2iN/v4syeL3lMZmJnTjdUTDBSYTVPSjB5VUFFNkE9PQ=='[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: tQr14flavBD2iN/v4syeL3lMZmJnTjdUTDBSYTVPSjB5VUFFNkE9PQ==
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mCampaign ID Extraction[2m > [22m[2mshould extract simple campaign ID
+[22m[39mmatch [
+  [32m'/campaign/simple-campaign-id'[39m,
+  [32m'simple-campaign-id'[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/simple-campaign-id'[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: simple-campaign-id
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mCampaign ID Extraction[2m > [22m[2mshould extract campaign ID with special characters
+[22m[39mmatch [
+  [32m'/campaign/ABC123-xyz_789'[39m,
+  [32m'ABC123-xyz_789'[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/ABC123-xyz_789'[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: ABC123-xyz_789
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mInvalid Survey Link[2m > [22m[2mshould show error message when no campaign ID in URL
+[22m[39mmatch [1mnull[22m
+Extracted campaignId: [1mnull[22m
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mInvalid Survey Link[2m > [22m[2mshould show error message for incorrect URL pattern
+[22m[39mmatch [1mnull[22m
+Extracted campaignId: [1mnull[22m
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mInvalid Survey Link[2m > [22m[2mshould show error message when campaign path is empty
+[22m[39mmatch [1mnull[22m
+Extracted campaignId: [1mnull[22m
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mConfigProvider Theme[2m > [22m[2mshould render SurveyForm with ConfigProvider when valid campaign ID
+[22m[39mmatch [
+  [32m'/campaign/test-campaign-123'[39m,
+  [32m'test-campaign-123'[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/test-campaign-123'[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: test-campaign-123
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mEdge Cases[2m > [22m[2mshould handle campaign ID with trailing slash
+[22m[39mmatch [
+  [32m'/campaign/test-campaign-123/'[39m,
+  [32m'test-campaign-123/'[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/test-campaign-123/'[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: test-campaign-123/
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mEdge Cases[2m > [22m[2mshould handle deeply nested campaign path
+[22m[39mmatch [
+  [32m'/campaign/region/location/specific-id'[39m,
+  [32m'region/location/specific-id'[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/region/location/specific-id'[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: region/location/specific-id
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mEdge Cases[2m > [22m[2mshould handle campaign ID with query parameters
+[22m[39mmatch [
+  [32m'/campaign/test-123'[39m,
+  [32m'test-123'[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/test-123'[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: test-123
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mEdge Cases[2m > [22m[2mshould handle URL with hash
+[22m[39mmatch [
+  [32m'/campaign/test-123'[39m,
+  [32m'test-123'[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/test-123'[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: test-123
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mLayout and Styling[2m > [22m[2mshould apply correct styling for error message container
+[22m[39mmatch [1mnull[22m
+Extracted campaignId: [1mnull[22m
+
+[90mstdout[2m | src/App.test.tsx[2m > [22m[2mApp[2m > [22m[2mLayout and Styling[2m > [22m[2mshould render with correct background color when valid campaign
+[22m[39mmatch [
+  [32m'/campaign/test-123'[39m,
+  [32m'test-123'[39m,
+  index: [33m0[39m,
+  input: [32m'/campaign/test-123'[39m,
+  groups: [90mundefined[39m
+]
+Extracted campaignId: test-123
+
+ [32mΓ£ô[39m src/App.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[33m 734[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should extract campaign ID from URL path [33m 370[2mms[22m[39m
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for inactive campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for expired campaign
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should display error message for campaign not yet started
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle 429 rate limit error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle already submitted error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Error States > should handle generic API error
+Warning: [antd: Alert] `message` is deprecated. Please use `title` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render campaign title and questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render rating question with emoji options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should render text area for text questions
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Rendering > should show reward details when reward exists
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should validate required fields before submission
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should successfully submit survey without reward opt-in
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should require customer info when opting in for reward
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should hide customer info fields when opting out of contest
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Form Submission > should handle submission errors gracefully
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Multiple Choice Questions > should render multiple choice options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Yes/No Questions > should render yes/no options
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should not show customer info fields when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Campaign Without Reward > should submit survey without reward info when no reward available
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+stderr | src/components/SurveyForm.test.tsx > SurveyForm > Responsive Behavior > should render correctly on mobile viewport
+Warning: [antd: Space] `direction` is deprecated. Please use `orientation` instead.
+
+ [32mΓ£ô[39m src/components/SurveyForm.test.tsx [2m([22m[2m23 tests[22m[2m | [22m[33m1 skipped[39m[2m)[22m[33m 13389[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should display loading spinner while fetching campaign [33m 508[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render campaign title and questions [33m 669[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render rating question with emoji options [33m 1381[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should validate required fields before submission [33m 491[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should successfully submit survey without reward opt-in [33m 3105[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should hide customer info fields when opting out of contest [33m 533[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should handle submission errors gracefully [33m 2321[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should render yes/no options [33m 707[2mms[22m[39m
+       [33m[2mΓ£ô[22m[39m should submit survey without reward info when no reward available [33m 2345[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m4 passed[39m[22m[90m (4)[39m
+[2m      Tests [22m [1m[32m67 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (68)[39m
+[2m   Start at [22m 17:04:08
+[2m   Duration [22m 39.47s[2m (transform 989ms, setup 8.03s, import 28.08s, tests 14.20s, environment 33.59s)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-----------------|---------|----------|---------|---------|---------------------
+File             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s   
+-----------------|---------|----------|---------|---------|---------------------
+All files        |   88.64 |    77.83 |   88.88 |   90.85 |                     
+ src             |     100 |      100 |     100 |     100 |                     
+  App.css        |       0 |        0 |       0 |       0 |                     
+  App.tsx        |     100 |      100 |     100 |     100 |                     
+ src/components  |   86.79 |    75.17 |   82.35 |   87.37 |                     
+  SurveyForm.tsx |   86.79 |    75.17 |   82.35 |   87.37 | ...,162,385,536-567 
+ src/utils       |      90 |       85 |   94.11 |   95.23 |                     
+  api.ts         |   89.28 |    81.81 |      90 |   89.28 | 61,127-130          
+  helpers.ts     |   90.47 |     86.2 |     100 |     100 | 24-27               
+-----------------|---------|----------|---------|---------|---------------------

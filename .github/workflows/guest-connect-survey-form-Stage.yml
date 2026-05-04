@@ -95,6 +95,10 @@ jobs:
           unset CI
           npm install --frozen-lockfile
 
+      - name: Run Unit Tests
+        run: |
+          npm run test:run
+
       - name: Run Staging Build
         env:
           DOTENV_CONFIG_PATH: .env.staging

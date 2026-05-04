@@ -296,6 +296,8 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ campaignId }) => {
 						<TextArea
 							rows={isMobile ? 2 : 3}
 							placeholder="Enter your response"
+							maxLength={256}
+							showCount
 						/>
 					</Form.Item>
 				);
