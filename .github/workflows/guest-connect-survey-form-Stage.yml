@@ -97,10 +97,10 @@ jobs:
 
       - name: Run Unit Tests
         env:
-          NODE_OPTIONS: --max-old-space-size=4096
-          CI: true
+          NODE_ENV: test
+          NODE_OPTIONS: --max-old-space-size=8192
         run: |
-          npm run test:run
+          npm run test:run -- --no-coverage
 
       - name: Run Staging Build
         env:
