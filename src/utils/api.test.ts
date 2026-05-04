@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
 import {
@@ -11,7 +11,6 @@ import {
 } from './api';
 import type {
   CampaignBasicData,
-  Question,
   BasicSubmissionPayload,
   AnswersSubmissionPayload,
   SurveySubmission,
@@ -52,8 +51,10 @@ describe('api', () => {
         active: true,
         startDate: '2026-01-01',
         endDate: '2026-12-31',
-        disclaimerText: 'Terms and conditions apply',
-        logoPath: '/logo.png',
+        guestConnectSetting: {
+          logoPath: '/logo.png',
+          disclaimerText: '',
+        },
       };
 
       mock.onGet(`${API_BASE_URL}/feedback/campaign/basic/${uniqueUrlToken}`).reply(200, {
@@ -227,8 +228,10 @@ describe('api', () => {
         active: true,
         startDate: '2026-01-01',
         endDate: '2026-12-31',
-        disclaimerText: 'Terms apply',
-        logoPath: '/logo.png',
+        guestConnectSetting: {
+          logoPath: '/logo.png',
+          disclaimerText: '',
+        },
       };
 
       const mockQuestionsResponse = {
@@ -329,7 +332,7 @@ describe('api', () => {
     it('should submit survey answers successfully', async () => {
       const payload: AnswersSubmissionPayload = {
         uniqueUrlToken: 'test-token-123',
-        feedbackSubmissionId: 'submission-123',
+        feedbackSubmissionId: 1,
         answers: [
           { questionId: 1, value: 5 },
           { questionId: 2, value: 'Great service!' },
@@ -350,7 +353,7 @@ describe('api', () => {
     it('should handle rate limiting (429)', async () => {
       const payload: AnswersSubmissionPayload = {
         uniqueUrlToken: 'test-token-123',
-        feedbackSubmissionId: 'submission-123',
+        feedbackSubmissionId: 1,
         answers: [],
       };
 
@@ -368,8 +371,16 @@ describe('api', () => {
     it('should submit survey using legacy endpoint', async () => {
       const submission: SurveySubmission = {
         campaignId: 'campaign-123',
-        answers: { question1: 5, question2: 'Good' },
-        metadata: { browser: 'Chrome', device: 'Desktop' },
+        answers: [
+          { questionId: 1, answer: 5 },
+          { questionId: 2, answer: 'Good' }
+        ],
+        metadata: {
+          browser: 'Chrome',
+          device: 'Desktop',
+          timestamp: '2026-05-04T12:00:00.000Z',
+          userAgent: 'test-agent'
+        },
       };
 
       mock.onPost(`${API_BASE_URL}/surveys/submit`).reply(200, {

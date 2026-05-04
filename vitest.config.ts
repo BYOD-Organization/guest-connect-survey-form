@@ -8,11 +8,11 @@ export default defineConfig({
     globals: true,
     environment: 'happy-dom',
     setupFiles: './src/test/setup.ts',
-    // Use a simpler pool configuration that works in CI
+    // Vitest 4 pool configuration
+    pool: 'forks',
     poolOptions: {
       forks: {
         singleFork: true,
-        execArgv: ['--max-old-space-size=8192'],
       },
     },
     sequence: {
